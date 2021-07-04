@@ -1,6 +1,8 @@
 # This part was not in the original Makefile:
-scf4: shaders_postprocessing
-	./shaders_postprocessing
+scf4: mask
+	./mask
+scf5: dither
+	./dither
 # End of the added part.
 # Beginning of the original part:
 #**************************************************************************************************

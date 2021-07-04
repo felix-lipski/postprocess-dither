@@ -36,8 +36,13 @@ int main(void)
     Texture2D texture = LoadTexture("resources/models/church_diffuse.png"); // Load model texture (diffuse map)
     model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texture;                     // Set model diffuse texture
 
-    Vector3 position = { 0.0f, 0.0f, 0.0f };                             // Set model position
-    Vector3 position2 = { 1.0f, 0.0f, 1.0f };                             // Set model position
+    /* Model robot01_model = LoadModel("resources/models/church.obj"); */
+    Model robot01_model = LoadModel("res/robot01.obj");
+    Texture2D robot01_texture = LoadTexture("resources/models/church_diffuse.png");
+    robot01_model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = robot01_texture;
+
+    Vector3 position = { -0.5f, 0.0f, -0.5f };                             // Set model position
+    Vector3 position2 = { 0.5f, 0.0f, 0.5f };                             // Set model position
 
     // Load all postpro shaders
     // NOTE 1: All postpro shader use the base vertex shader (DEFAULT_VERTEX_SHADER)
@@ -52,6 +57,7 @@ int main(void)
 
     // Create a RenderTexture2D to be used for render to texture
     RenderTexture2D target = LoadRenderTexture(screenWidth, screenHeight);
+    /* RenderTexture2D target2 = LoadRenderTexture(screenWidth, screenHeight); */
 
     // Setup orbital camera
     SetCameraMode(camera, CAMERA_ORBITAL);  // Set an orbital camera mode
@@ -87,7 +93,7 @@ int main(void)
 
                     DrawModel(model, position, 0.1f, WHITE);   // Draw 3d model with texture
 
-                    DrawModel(model, position2, 0.1f, WHITE);   // Draw 3d model with texture
+                    DrawModel(robot01_model, position2, 0.4f, WHITE);   // Draw 3d model with texture
 
                     DrawGrid(10, 1.0f);     // Draw a grid
 
@@ -99,7 +105,7 @@ int main(void)
             BeginShaderMode(shaders[currentShader]);
 
                 // NOTE: Render texture must be y-flipped due to default OpenGL coordinates (left-bottom)
-                DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
+                DrawTextureRec(target.texture, (Rectangle){ 0, 0, (float)target.texture.width/2.0, (float)-target.texture.height }, (Vector2){ 0, 0 }, WHITE);
 
             EndShaderMode();
 
@@ -125,7 +131,9 @@ int main(void)
     for (int i = 0; i < MAX_POSTPRO_SHADERS; i++) UnloadShader(shaders[i]);
 
     UnloadTexture(texture);         // Unload texture
+    UnloadTexture(robot01_texture);         // Unload texture
     UnloadModel(model);             // Unload model
+    UnloadModel(robot01_model);             // Unload model
     UnloadRenderTexture(target);    // Unload render texture
 
     CloseWindow();                  // Close window and OpenGL context
