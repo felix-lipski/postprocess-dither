@@ -26,7 +26,7 @@ int main(void)
 
     // Define our three models to show the shader on
     Mesh torus = GenMeshTorus(0.3f, 1, 16, 32);
-    Model model1 = LoadModelFromMesh(torus);
+    /* Model model1 = LoadModelFromMesh(torus); */
 
     Mesh cube = GenMeshCube(0.8f,0.8f,0.8f);
     Model model2 = LoadModelFromMesh(cube);
@@ -35,6 +35,7 @@ int main(void)
     Mesh sphere = GenMeshSphere(1, 16, 16);
     Model model3 = LoadModelFromMesh(sphere);
 
+    Model model1 = LoadModel("res/boiler.obj");                 // Load OBJ model
     // Load the shader
     /* Shader shader = LoadShader(0, TextFormat("resources/shaders/glsl%i/mask.fs", GLSL_VERSION)); */
     Shader shader = LoadShader(0, TextFormat("dither.fs"));
@@ -48,7 +49,7 @@ int main(void)
     // Using MATERIAL_MAP_EMISSION as a spare slot to use for 2nd texture
     // NOTE: Don't use MATERIAL_MAP_IRRADIANCE, MATERIAL_MAP_PREFILTER or  MATERIAL_MAP_CUBEMAP as they are bound as cube maps
     /* Texture texMask = LoadTexture("resources/mask.png"); */
-    Texture texMask = LoadTexture("res/checker_1.png");
+    Texture texMask = LoadTexture("res/boiler-color.png");
     model1.materials[0].maps[MATERIAL_MAP_EMISSION].texture = texMask;
     model2.materials[0].maps[MATERIAL_MAP_EMISSION].texture = texMask;
     shader.locs[SHADER_LOC_MAP_EMISSION] = GetShaderLocation(shader, "mask");

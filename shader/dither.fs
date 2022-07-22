@@ -31,6 +31,22 @@ vec3 board[3] = vec3[](
     vec3(0.0, 0.7, 0.0)
 );
 
+vec3 yellow[3] = vec3[](
+    vec3(0.0, 0.0, 0.0),
+    vec3(0.5, 0.5, 0.0),
+    vec3(1.0, 1.0, 0.0)
+);
+vec3 sea[3] = vec3[](
+    vec3(0.0, 0.2, 0.4),
+    vec3(0.0, 0.5, 0.5),
+    vec3(1.0, 1.0, 1.0)
+);
+vec3 teal[3] = vec3[](
+    vec3(0.0, 0.5, 0.0),
+    vec3(0.0, 0.2, 0.4),
+    vec3(0.0, 0.5, 0.5)
+);
+
 float luma(vec3 color) {
   return dot(color, vec3(0.299, 0.587, 0.114));
 }
@@ -38,10 +54,27 @@ float luma(vec4 color) {
   return dot(color.rgb, vec3(0.299, 0.587, 0.114));
 }
 
+/* ffff00 */
+/* 808080 */
+/* 008080 */
+/* 800000 */
+
 vec3 dithermono(vec2 pos, vec4 col, vec4 maskCol) {
+    int red = int(maskCol.r * 256.0);
+    int green = int(maskCol.g * 256.0);
+    int blue = int(maskCol.b * 256.0);
     vec3 palette[] = board;
-    if (luma(maskCol) > 0.5) {
-        palette = alumi;
+    /* if (maskCol.b == 0.50) { */
+    if (red == 0) {
+        palette = teal;
+    } else if (red == 128) {
+        if (blue == 128) {
+            palette = steel;
+        } else {
+            palette = rust;
+        };
+    } else if (red == 256) {
+        palette = yellow;
     };
     
     float bands = palette.length();
@@ -66,6 +99,7 @@ vec3 dithermono(vec2 pos, vec4 col, vec4 maskCol) {
 	float _out = a;
 	if (bri > limit) { _out = b; };
     /* return col.xyz; */
+    /* return maskCol.xyz; */
     /* return vec3(bri, bri, bri); */
     return palette[int(floor(_out*bands*0.99))];
 }
