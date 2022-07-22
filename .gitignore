@@ -2,6 +2,6 @@ test.c
 example.c
 examples/
 
-shader/old-dither.fs
-shader/resources
+/* shader/old-dither.fs */
+/* shader/resources */
 
