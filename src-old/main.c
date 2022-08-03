@@ -1,16 +1,8 @@
 #include "raylib.h"
 #include "raymath.h"
 
-#if defined(PLATFORM_DESKTOP)
-    #define GLSL_VERSION            330
-#else   // PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
-    #define GLSL_VERSION            100
-#endif
 
-int main(void)
-{
-    // Initialization
-    //--------------------------------------------------------------------------------------
+int main(void) {
     const int screenWidth = 800;
     const int screenHeight = 450;
 
@@ -38,10 +30,10 @@ int main(void)
     Model model1 = LoadModel("res/boiler.obj");                 // Load OBJ model
     // Load the shader
     /* Shader shader = LoadShader(0, TextFormat("resources/shaders/glsl%i/mask.fs", GLSL_VERSION)); */
-    Shader shader = LoadShader(0, TextFormat("dither.fs"));
+    Shader shader = LoadShader(0, "mask-dither.fs");
 
     // Load and apply the diffuse texture (colour map)
-    Texture texDiffuse = LoadTexture("resources/plasma.png");
+    Texture texDiffuse = LoadTexture("res/plasma.png");
     /* Texture texDiffuse = LoadTexture("res/checker_1.png"); */
     model1.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texDiffuse;
     model2.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texDiffuse;
@@ -54,40 +46,32 @@ int main(void)
     model2.materials[0].maps[MATERIAL_MAP_EMISSION].texture = texMask;
     shader.locs[SHADER_LOC_MAP_EMISSION] = GetShaderLocation(shader, "mask");
 
-    // Frame is incremented each frame to animate the shader
-    int shaderFrame = GetShaderLocation(shader, "frame");
+    /* // Frame is incremented each frame to animate the shader */
+    /* int shaderFrame = GetShaderLocation(shader, "frame"); */
 
     // Apply the shader to the two models
     model1.materials[0].shader = shader;
     model2.materials[0].shader = shader;
 
     int framesCounter = 0;
-    Vector3 rotation = { 0 };       // Model rotation angles
+    Vector3 rotation = { 0 };
 
-    SetTargetFPS(60);               // Set  to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+    SetTargetFPS(60);
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
-    {
-        // Update
-        //----------------------------------------------------------------------------------
+    while (!WindowShouldClose()) {
+
         framesCounter++;
         rotation.x += 0.01f;
         rotation.y += 0.005f;
         rotation.z -= 0.0025f;
 
-        // Send frames counter to shader for animation
-        SetShaderValue(shader, shaderFrame, &framesCounter, SHADER_UNIFORM_INT);
+        /* // Send frames counter to shader for animation */
+        /* SetShaderValue(shader, shaderFrame, &framesCounter, SHADER_UNIFORM_INT); */
 
         // Rotate one of the models
         model1.transform = MatrixRotateXYZ(rotation);
 
         UpdateCamera(&camera);
-        //----------------------------------------------------------------------------------
-
-        // Draw
-        //----------------------------------------------------------------------------------
         BeginDrawing();
 
             ClearBackground(DARKBLUE);
@@ -107,22 +91,14 @@ int main(void)
             DrawFPS(10, 10);
 
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
     UnloadModel(model1);
     UnloadModel(model2);
     UnloadModel(model3);
-
-    UnloadTexture(texDiffuse);  // Unload default diffuse texture
-    UnloadTexture(texMask);     // Unload texture mask
-
-    UnloadShader(shader);       // Unload shader
-
-    CloseWindow();              // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
-
+    UnloadTexture(texDiffuse);
+    UnloadTexture(texMask);
+    UnloadShader(shader);
+    CloseWindow();
     return 0;
 }
