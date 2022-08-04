@@ -1,6 +1,0 @@
-*.exe
-*.o
-*.so
-*.hi
-.direnv
-.envrc
