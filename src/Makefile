@@ -1,8 +1,18 @@
-scf4: exe
-	./exe
+scf4: nim.exe
+	./nim.exe
 
-exe: main.c rlights.h
-	gcc -o exe main.c -lraylib -lm -I.
+
+game.o: game.c
+	gcc game.c -c -fPIC -lraylib -lm -I.
+
+
+nim.exe: main.nim game.o bindings.nim
+	nim c \
+		-o:nim.exe \
+		--threads:on \
+		--passL:game.o \
+		--passL:"-lraylib" \
+		main.nim
 
 clean:
-	rm exe
+	rm *.exe *.o

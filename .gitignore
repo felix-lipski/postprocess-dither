@@ -3,7 +3,6 @@ example.c
 examples/
 
 *exe
+*.o
 
-/* shader/old-dither.fs */
-/* shader/resources */
-
+.direnv
