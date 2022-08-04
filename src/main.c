@@ -1,20 +1,11 @@
 #include "raylib.h"
 #include "raymath.h"
-#define RLIGHTS_IMPLEMENTATION
-#include "rlights.h"
 
-
-int main(void)
-{
-    const int screenWidth = 1920;
-    const int screenHeight = 1080;
-
-    /* SetConfigFlags(FLAG_MSAA_4X_HINT); */
+int main(void) {
     InitWindow(1920, 1080, "masked dither");
 
     Camera camera = { 0 };
     camera.position = (Vector3){ 12.0f, 10.0f, 0.0f };
-    /* camera.position = (Vector3){ 12.0f, 1.0f, 0.0f }; */
     camera.target = (Vector3){ 0.0f, 3.5f, 0.0f };  
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };      
     camera.fovy = 50.0f;                           
@@ -23,11 +14,6 @@ int main(void)
     Shader shader = LoadShader("res/base_lighting.vs", "lighting-mask.fs");
     shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
     
-
-    int ambientLoc = GetShaderLocation(shader, "ambient");
-    /* SetShaderValue(shader, ambientLoc, (float[4]){ 0.1f, 0.1f, 0.1f, 1.0f }, SHADER_UNIFORM_VEC4); */
-    SetShaderValue(shader, ambientLoc, (float[4]){ 0.4f, 0.4f, 0.4f, 1.0f }, SHADER_UNIFORM_VEC4);
-
     Texture texMask = LoadTexture("res/regions.png");
     shader.locs[SHADER_LOC_MAP_EMISSION] = GetShaderLocation(shader, "mask");
 
@@ -47,17 +33,12 @@ int main(void)
     grass_plane.materials[0].maps[MATERIAL_MAP_EMISSION].texture = texMask;
     grass_plane.materials[0].shader = shader;
 
-
-    Light lights[1] = { 0 };
-    lights[0] = CreateLight(LIGHT_POINT, (Vector3){ 100, 100, 100 }, Vector3Zero(), WHITE, shader);
-
     SetCameraMode(camera, CAMERA_ORBITAL);
     /* SetCameraMode(camera, CAMERA_FIRST_PERSON); */
     SetTargetFPS(60);                       
 
     while (!WindowShouldClose()) {
         UpdateCamera(&camera);              
-        UpdateLightValues(shader, lights[0]);
         float cameraPos[3] = { camera.position.x, camera.position.y, camera.position.z };
         SetShaderValue(shader, shader.locs[SHADER_LOC_VECTOR_VIEW], cameraPos, SHADER_UNIFORM_VEC3);
         BeginDrawing();
@@ -80,5 +61,3 @@ int main(void)
     CloseWindow();        
     return 0;
 }
-
-
