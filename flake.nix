@@ -2,6 +2,8 @@
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
     flake-utils.url = github:numtide/flake-utils;
+    pararules.url = github:paranim/pararules;
+    pararules.flake = false;
   };
 
   outputs = { nixpkgs, self, flake-utils, ... }@inputs:
@@ -20,6 +22,7 @@
               libGL xorg.libX11
             ]; 
             shellHook = ''
+                export PARARULES=${inputs.pararules}/src
               '' ;
           };
         }

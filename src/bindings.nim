@@ -38,3 +38,5 @@ proc DrawModel*(model: Model, pos: Vector3, scale: cfloat, tint: Color) {.import
 proc init_camera*(): Camera {.importc.}
 proc init_shader*(): Shader {.importc.}
 proc apply_shader*(model: Model, shader: Shader, texMask: Texture2D) {.importc.}
+
+proc add_sky*(): Model {.importc.}

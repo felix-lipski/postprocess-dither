@@ -12,6 +12,8 @@ nim.exe: main.nim game.o bindings.nim
 		--threads:on \
 		--passL:game.o \
 		--passL:"-lraylib" \
+		-p:$(PARARULES) \
+		-p:/lkj/ \
 		main.nim
 
 clean:

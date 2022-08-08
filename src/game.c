@@ -5,24 +5,39 @@ Camera init_camera() {
     InitWindow(1920, 1080, "masked dither");
 
     Camera camera = { 0 };
-    camera.position = (Vector3){ 12.0f, 10.0f, 0.0f };
+    /* camera.position = (Vector3){ 12.0f, 10.0f, 0.0f }; */
+    camera.position = (Vector3){ 12.0f, 1.8f, 0.0f };
     camera.target = (Vector3){ 0.0f, 3.5f, 0.0f };  
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };      
     camera.fovy = 50.0f;                           
     camera.projection = CAMERA_PERSPECTIVE;        
 
-    SetCameraMode(camera, CAMERA_ORBITAL);
-    /* SetCameraMode(camera, CAMERA_FIRST_PERSON); */
+    /* SetCameraMode(camera, CAMERA_ORBITAL); */
+    SetCameraMode(camera, CAMERA_FIRST_PERSON);
     SetTargetFPS(60);                       
     return camera;
 }
 
 Shader init_shader() {
-    Shader shader = LoadShader("res/base_lighting.vs", "res/mask-light-dither.fs");
+    Shader shader = LoadShader("res/shaders/base_lighting.vs", "res/shaders/mask-light-dither.fs");
     shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
     shader.locs[SHADER_LOC_MAP_EMISSION] = GetShaderLocation(shader, "mask");
 
     return shader;
+}
+
+Model add_sky() {
+    Shader shader = LoadShader("res/shaders/base_lighting.vs", "res/shaders/sky.fs");
+    shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
+    
+    Texture texMask = LoadTexture("res/textures/regions.png");
+    shader.locs[SHADER_LOC_MAP_EMISSION] = GetShaderLocation(shader, "mask");
+
+    Model sky = LoadModel("res/sky.obj");
+    sky.materials[0].maps[MATERIAL_MAP_EMISSION].texture = texMask;
+    sky.materials[0].shader = shader;
+
+    return sky;
 }
 
 void apply_shader(Model model, Shader shader, Texture2D texMask) {

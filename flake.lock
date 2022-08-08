@@ -31,10 +31,27 @@
         "type": "github"
       }
     },
+    "pararules": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1652693116,
+        "narHash": "sha256-i8qBZQkZltrTCqfViihmbknoMzd3IU2oubhiWoZpv3c=",
+        "owner": "paranim",
+        "repo": "pararules",
+        "rev": "e0edebd61dcb4ff8f9d8ad854a1b3bedbf404b10",
+        "type": "github"
+      },
+      "original": {
+        "owner": "paranim",
+        "repo": "pararules",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "pararules": "pararules"
       }
     }
   },

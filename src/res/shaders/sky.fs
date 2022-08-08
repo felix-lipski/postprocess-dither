@@ -168,8 +168,8 @@ void main() {
 
     light = -normalize(vec3(0.0,0.0,0.0) - vec3(1.0,1.0,1.0));
     /* light = normalize(lights[0].position - fragPosition); */
-    float NdotL = max(dot(normal, light), 0.0);
-    /* float NdotL = (max(dot(normal, light), -1.0) * 0.8) + 0.3; */
+    /* float NdotL = max(-dot(normal, light), 0.0); */
+    float NdotL = (-dot(normal, light) * 0.5) + 0.5;
     /* lightDot += lights[0].color.rgb*NdotL; */
     lightDot += vec3(1.0,1.0,1.0).rgb*NdotL;
 
