@@ -41,7 +41,10 @@ Model add_sky() {
 }
 
 void apply_shader(Model model, Shader shader, Texture2D texMask) {
-    model.materials[0].maps[MATERIAL_MAP_EMISSION].texture = texMask;
+    /* model.materials[0].maps[MATERIAL_MAP_EMISSION].texture = texMask; */
+    /* model.materials[0].shader = shader; */
+
+    model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = texMask;
     model.materials[0].shader = shader;
 }
 

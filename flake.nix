@@ -23,6 +23,7 @@
             ]; 
             shellHook = ''
                 export PARARULES=${inputs.pararules}/src
+                ech ${pkgs.raylib}
               '' ;
           };
         }

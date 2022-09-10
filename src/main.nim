@@ -1,6 +1,40 @@
 import bindings
 import pararules
 
+type
+  Id = enum
+    Global, Player,
+  Attr = enum
+    DeltaTime, TotalTime,
+    X, Y,
+
+schema Fact(Id, Attr):
+  DeltaTime: float
+  TotalTime: float
+  X: float
+  Y: float
+
+# create rule
+let rule1 =
+  rule printTime(Fact):
+    what:
+      (Global, TotalTime, tt)
+    then:
+      echo tt
+
+# create session and add rule
+var session = initSession(Fact)
+session.add(rule1)
+
+echo "kj"
+
+var t = 0.0
+for i in 0..20:
+  session.insert(Global, DeltaTime, 1.0)
+  session.insert(Global, TotalTime, t)
+  t += 1
+
+
 let white = Color(r: 255, g: 255, b: 255, a: 255)
 let blue  = Color(r: 24, g: 63, b: 57, a: 255)
 let camera = init_camera()
@@ -27,6 +61,7 @@ let mech        = Entity(model: load_model("res/mech.obj"), position: Vector3(x:
 let mech2       = Entity(model: load_model("res/mech2.obj"), position: Vector3(z: -4))
 let house       = Entity(model: load_model("res/house.obj"), position: Vector3(x: -3, z: -8))
 let man         = Entity(model: load_model("res/man.obj"), position: Vector3())
+# let man         = Entity(model: load_model("res/man2.obj"), position: Vector3())
 let skyModel    = add_sky()
 
 let ents = @[
